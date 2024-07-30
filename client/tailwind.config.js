@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "customImage": "url('./src/assets/bits-back.svg')",
+        "customImage": "url('./public/bits-back.svg')",
       },
       fontFamily: {
         "font-caveat": ["Caveat", 'sans-serif']
