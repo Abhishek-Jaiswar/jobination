@@ -7,7 +7,7 @@ const register = async (req, res) => {
         const { fullname, email, phone, password, role } = req.body
 
         if (!fullname || !email || !phone || !password || !role) {
-            return res.status(402).json({
+            return res.status(401).json({
                 message: "Please fill all the details..!",
                 success: false
             })
@@ -38,7 +38,8 @@ const register = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: "Failed to register user",
-            success: false
+            success: false,
+            error: error.message
         })
     }
 }
@@ -58,6 +59,7 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 message: "Incorrect email or password"
+                
             })
         }
 

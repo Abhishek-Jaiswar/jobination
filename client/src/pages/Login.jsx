@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
+import { USER_API_ENDPOINT } from "@/utils/constants";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -12,14 +15,38 @@ const Login = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
+  const navigate = useNavigate();
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+
+    if (input.file) {
+      formData.append("file", input.file);
+    }
+    try {
+      const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
+        headers: {
+          "Content-Type": "Application/json",
+        },
+        withCredentials: true,
+      });
+
+      if (res.data.success) {
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
     <div className="mt-12 flex items-center justify-center">
-      <form onSubmit={submitHandler} className=" w-[20rem] md:w-[25rem] lg:w-[30rem]">
+      <form
+        onSubmit={submitHandler}
+        className=" w-[20rem] md:w-[25rem] lg:w-[30rem]"
+      >
         <div className="flex items-center justify-start mb-6">
           <h1 className="text-3xl text-orange-400 font-bold">
             Welcome Back, Job Seeker!
@@ -68,15 +95,15 @@ const Login = () => {
                   type="radio"
                   id="jobseeker"
                   name="role"
-                  value="Jobseeker"
-                  checked={input.role === "Jobseeker"}
+                  value="jobseeker"
+                  checked={input.role === "jobseeker"}
                   onChange={changeEventHandler}
                   className="hidden" // Hide the radio button itself
                 />
                 <label
                   htmlFor="jobseeker"
                   className={`block text-center p-4 transition-all duration-200 border rounded cursor-pointer ${
-                    input.role === "Jobseeker"
+                    input.role === "jobseeker"
                       ? "bg-orange-400 text-white"
                       : "bg-gray-200"
                   }`}
@@ -116,7 +143,10 @@ const Login = () => {
         <div className="py-1">
           <p className="text-base text-gray-800 font-semibold">
             Dont't have an account?{" "}
-            <Link to="/sign-up" className=" underline text-gray-600 font-normal">
+            <Link
+              to="/sign-up"
+              className=" underline text-gray-600 font-normal"
+            >
               Signup here!
             </Link>
           </p>

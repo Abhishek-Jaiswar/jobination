@@ -1,13 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { USER_API_ENDPOINT } from "../utils/constants";
+import { toast } from "sonner";
 
 const SignUp = () => {
   const [input, setInput] = useState({
     fullname: "",
     email: "",
     password: "",
+    phone: "",
     role: "",
     file: "",
   });
@@ -20,35 +22,47 @@ const SignUp = () => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
 
+  const navigate = useNavigate();
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
+    formData.append("phone", input.phone);
     formData.append("password", input.password);
     formData.append("role", input.role);
 
     if (input.file) {
       formData.append("file", input.file);
     }
+
     try {
-      const res = axios.post(`${USER_API_ENDPOINT}/register`, formData, {
+      const res = await axios.post(`${USER_API_ENDPOINT}/register`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "multipart/form-data",
         },
-        withCredentials: true
+        withCredentials: true,
       });
-    } catch (error) {}
+
+      if (res.data.success) {
+        navigate("/login");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "An error occurred");
+    }
   };
 
   return (
-    <div className="mt-6 flex items-center justify-center">
+    <div className="mt-3 flex items-center justify-center">
       <form
         onSubmit={submitHandler}
         className=" w-[20rem] md:w-[25rem] lg:w-[30rem]"
       >
-        <div className="flex items-center justify-start mb-6">
-          <h1 className="text-3xl text-orange-400 font-bold">
+        <div className="flex items-center justify-start mb-2">
+          <h1 className="text-2xl text-orange-400 font-bold">
             Start Your Job Hunt with Us
           </h1>
         </div>
@@ -89,6 +103,22 @@ const SignUp = () => {
             className="text-base text-gray-800 font-semibold"
             htmlFor="fullname"
           >
+            Phone{" "}
+          </label>
+          <input
+            className="w-full px-3 py-2 border-2 border-gray-400 rounded-md placeholder:text-gray-500"
+            type="text"
+            placeholder="Phone"
+            value={input.phone}
+            name="phone"
+            onChange={changeEventHandler}
+          />
+        </div>
+        <div className="py-2 flex  flex-col gap-1">
+          <label
+            className="text-base text-gray-800 font-semibold"
+            htmlFor="fullname"
+          >
             {" "}
             Password
           </label>
@@ -101,7 +131,7 @@ const SignUp = () => {
             onChange={changeEventHandler}
           />
         </div>
-        <div className="py-4">
+        <div className="py-2">
           <label htmlFor="role" className="text-base font-semibold ">
             Select Role
             <div className="grid grid-cols-2 gap-2 py-1">
@@ -110,15 +140,15 @@ const SignUp = () => {
                   type="radio"
                   id="jobseeker"
                   name="role"
-                  value="Jobseeker"
-                  checked={input.role === "Jobseeker"}
+                  value="jobseeker"
+                  checked={input.role === "jobseeker"}
                   onChange={changeEventHandler}
                   className="hidden" // Hide the radio button itself
                 />
                 <label
                   htmlFor="jobseeker"
                   className={`block text-center p-4 transition-all duration-200 border rounded cursor-pointer ${
-                    input.role === "Jobseeker"
+                    input.role === "jobseeker"
                       ? "bg-orange-400 text-white"
                       : "bg-gray-200"
                   }`}
@@ -131,15 +161,15 @@ const SignUp = () => {
                   type="radio"
                   id="recruiter"
                   name="role"
-                  value="Recruiter"
-                  checked={input.role === "Recruiter"}
+                  value="recruiter"
+                  checked={input.role === "recruiter"}
                   onChange={changeEventHandler}
                   className="hidden" // Hide the radio button itself
                 />
                 <label
                   htmlFor="recruiter"
                   className={`block text-center transition-all duration-200 p-4 border rounded cursor-pointer ${
-                    input.role === "Recruiter"
+                    input.role === "recruiter"
                       ? "bg-orange-400 text-white"
                       : "bg-gray-200"
                   }`}
