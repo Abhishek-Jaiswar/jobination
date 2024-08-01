@@ -17,7 +17,7 @@ export const theme = {
   },
   extend: {
     backgroundImage: {
-      'customImage': "url('./bits-back.svg')",
+      'customImage': "url('./bits-back.png')",
     },
     colors: {
       border: "hsl(var(--border))",
