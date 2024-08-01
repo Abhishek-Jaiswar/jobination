@@ -16,6 +16,9 @@ export const theme = {
     },
   },
   extend: {
+    backgroundImage: {
+      'custom-image': "url('/bits-back.svg')",
+    },
     colors: {
       border: "hsl(var(--border))",
       input: "hsl(var(--input))",
