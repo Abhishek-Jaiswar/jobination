@@ -1,13 +1,15 @@
 import React from "react";
-import Hero from "./components/shared/Hero";
-import PopularFeeds from "./components/shared/PopularFeeds";
+import Hero from "./pages/Hero";
+import Feeds from "./components/shared/Feeds";
 
 const App = () => {
   return (
     <div className="">
-      <div className="mt-28 md:mt-32 w-full flex items-center justify-center flex-col">
+      <div className="  mt-28 md:mt-32 w-full flex items-center justify-center flex-col">
         <Hero />
-        <PopularFeeds />
+      </div>
+      <div className="">
+        <Feeds />
       </div>
     </div>
   );

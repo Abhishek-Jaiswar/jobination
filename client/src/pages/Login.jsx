@@ -24,7 +24,7 @@ const Login = () => {
       formData.append("file", input.file);
     }
     try {
-      const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
+      const res = await axios.post(`${USER_API_ENDPOINT}/users/login`, input, {
         headers: {
           "Content-Type": "Application/json",
         },

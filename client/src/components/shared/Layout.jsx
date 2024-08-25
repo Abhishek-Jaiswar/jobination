@@ -7,7 +7,7 @@ import Footer from "./Footer.jsx";
 
 const Layout = () => {
   return (
-    <div className=" h-screen bg-customImage bg-cover bg-center backdrop-blur-sm">
+    <div className="">
       <Navbar />
       <Toaster />
       <Outlet />
@@ -15,5 +15,7 @@ const Layout = () => {
     </div>
   );
 };
+
+// h-screen bg-customImage bg-cover bg-center backdrop-blur-sm
 
 export default Layout;

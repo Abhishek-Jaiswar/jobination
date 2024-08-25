@@ -1,9 +1,10 @@
+import EmployersJobPost from "@/components/shared/EmployersJobPost";
+import SearchBar from "@/components/shared/SearchBar";
 import React from "react";
-import IntImage from "../../assets/interview.svg";
 
 const Hero = () => {
   return (
-    <div className=" md:flex items-center justify-betwen">
+    <div className=" md:flex flex-col items-center justify-betwen">
       <div className=" m-auto">
         <div className="flex items-center justify-center text-center">
           <p className=" border-2 border-e-red-500 border-s-orange-400 border-t-gray-800 border-b-gray-800 px-3 py-1 text-base font-semibold bg-white rounded-full ">
@@ -22,14 +23,12 @@ const Hero = () => {
             Apply now and you could receive a job offer within an hour!"
           </p>
         </div>
-        <div>
-          <div>
-            <input 
-            type="text"
-             />
-          </div>
-          <div></div>
-        </div>
+      </div>
+      <div className="py-10">
+        <SearchBar />
+      </div>
+      <div>
+        {/* <EmployersJobPost /> */}
       </div>
     </div>
   );
