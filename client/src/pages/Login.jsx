@@ -3,6 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_ENDPOINT } from "@/utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setUser } from "@/redux/authSlice";
+import store from "@/redux/store";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -10,6 +15,9 @@ const Login = () => {
     password: "",
     role: "",
   });
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.auth);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -24,6 +32,7 @@ const Login = () => {
       formData.append("file", input.file);
     }
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/users/login`, input, {
         headers: {
           "Content-Type": "Application/json",
@@ -32,12 +41,15 @@ const Login = () => {
       });
 
       if (res.data.success) {
+        dispatch(setUser(res.data.user))
         navigate("/");
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -137,7 +149,14 @@ const Login = () => {
         </div>
         <div>
           <button className="w-full mt-2 bg-orange-400 hover:bg-orange-300 text-white font-semibold py-2 rounded-md">
-            Login
+            {loading ? (
+              <span className=" flex items-center justify-center gap-2">
+                <Loader2 className="text-2xl text-white animate-spin" /> Please
+                wait..
+              </span>
+            ) : (
+              <span>Login</span>
+            )}
           </button>
         </div>
         <div className="py-1">

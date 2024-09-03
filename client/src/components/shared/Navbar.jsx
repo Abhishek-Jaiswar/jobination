@@ -3,12 +3,13 @@ import { FaBars, FaUserTie } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [popOver, setPopover] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
-  const isUser = false;
+  const { user } = useSelector((store) => store.auth);
 
   const dropDownRef = useRef();
 
@@ -58,11 +59,11 @@ const Navbar = () => {
             <Link to="/">
               <li>Home</li>
             </Link>
-            <Link to="/browse-jobs">
-              <li>Browse Jobs</li>
+            <Link to="/jobs">
+              <li>Jobs</li>
             </Link>
-            <Link to="/applied-jobs">
-              <li>Applied Jobs</li>
+            <Link to="/browse">
+              <li>Browse</li>
             </Link>
           </ul>
 
@@ -73,7 +74,7 @@ const Navbar = () => {
             />
           </div>
 
-          {isUser ? (
+          {!user ? (
             <div ref={dropDownRef} className="relative">
               <div
                 onClick={handlePopUp}
@@ -103,9 +104,11 @@ const Navbar = () => {
                   <div className="flex flex-col items-start gap-4 pt-4">
                     <div className="group flex items-center gap-2 cursor-pointer">
                       <FaUserTie className="text-2xl group-hover:text-gray-700 text-gray-500" />
-                      <button className="font-semibold text-gray-600 group-hover:text-gray-700 group-hover:underline">
-                        View profile
-                      </button>
+                      <Link to='/profile'>
+                        <button className="font-semibold text-gray-600 group-hover:text-gray-700 group-hover:underline">
+                          View profile
+                        </button>
+                      </Link>
                     </div>
                     <div className="flex group cursor-pointer items-center gap-2">
                       <BiLogOut className="text-2xl group-hover:text-gray-700 text-gray-500" />

@@ -12,8 +12,10 @@ const LatestJobs = () => {
       </div>
       <div className="py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-5  ">
-          {jobs.map((job) => (
-            <LatestJobCards />
+          {jobs.map((job, idx) => (
+            <div key={idx}>
+              <LatestJobCards />
+            </div>
           ))}
         </div>
       </div>

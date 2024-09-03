@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { USER_API_ENDPOINT } from "../utils/constants";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 const SignUp = () => {
   const [input, setInput] = useState({
@@ -13,6 +16,9 @@ const SignUp = () => {
     role: "",
     file: "",
   });
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.auth);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -38,12 +44,17 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post(`${USER_API_ENDPOINT}/users/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      dispatch(setLoading(true));
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/users/register`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
 
       if (res.data.success) {
         navigate("/login");
@@ -52,6 +63,8 @@ const SignUp = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "An error occurred");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -202,7 +215,14 @@ const SignUp = () => {
         </div>
         <div>
           <button className="w-full mt-2 bg-orange-400 hover:bg-orange-300 text-white font-semibold py-2 rounded-md">
-            Sign Up
+            {loading ? (
+              <span className=" flex items-center justify-center gap-2">
+                <Loader2 className="text-2xl text-white animate-spin" /> Please
+                wait..
+              </span>
+            ) : (
+              <span>Sign Up</span>
+            )}
           </button>
         </div>
         <div className="py-1">

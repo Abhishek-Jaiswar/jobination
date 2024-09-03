@@ -25,17 +25,17 @@ const filterData = [
 
 const FilterSection = () => {
   return (
-    <div>
+    <div className="border border-zinc-300 p-4">
       <div className="border-b border-b-zinc-300 pb-4">
-        <h1>Filter Jobs</h1>
+        <h1 className="text-lg text-zinc-800 font-bold">Filter Jobs</h1>
       </div>
       <div>
         <RadioGroup>
-          {filterData.map((filter) => (
-            <div className="mb-6">
+          {filterData.map((filter, idx) => (
+            <div className="mb-6" key={idx}>
               <h1 className="text-lg text-zinc-800 font-medium">{filter.filterType}</h1>
               {filter.locations.map((loc,idx) => (
-                <div className="flex items-center gap-2 mt-2 ml-3">
+                <div key={idx} className="flex items-center gap-2 mt-2 ml-3">
                   <RadioGroupItem value={loc} />
                   <Label>{loc}</Label>
                 </div>

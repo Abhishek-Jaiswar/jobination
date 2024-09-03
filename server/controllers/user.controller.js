@@ -105,7 +105,7 @@ const login = async (req, res) => {
                 httpOnly: true,
                 sameSite: 'strict'
             }).json({
-                message: "Logged in successful",
+                message: `Welcome back ${user.fullname} :)`,
                 user: responseUser,
                 token,
                 success: true,
